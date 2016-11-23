@@ -8,9 +8,12 @@ class Ball
 private:
     int x;
     int y;
+    int prevX;
+    int prevY;
     int speed;
     int numHits;
-    int angle;
+    int xSpeed;
+    int ySpeed;
 public:
     Ball(int x, int y);
 
@@ -19,14 +22,17 @@ public:
     int getX();
     int getY();
     int getSize();
-    int getSpeed();
+    int getXSpeed();
+    int getYSpeed();
 
     void move();
     void launch();
-    void updateSpeed();
+    void reset();
     bool collidesWithWall();
     bool collidesWithPaddle(Paddle* paddle);
+    void bounce(Paddle* paddle);
     void bounce();
+    float slope();
 };
 
 #endif // BALL_H

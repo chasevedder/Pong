@@ -46,6 +46,10 @@ void Pong::handleInput() {
     }
     if (keystate[SDL_SCANCODE_ESCAPE])
         exit = true;
+    if (keystate[SDL_SCANCODE_UP])
+        enemy->move(-2);
+    else if (keystate[SDL_SCANCODE_DOWN])
+        enemy->move(2);
 
     SDL_Event event;
 
@@ -58,9 +62,29 @@ void Pong::handleInput() {
 
 void Pong::update() {
     ball->move();
-    if (ball->collidesWithPaddle(player) || ball->collidesWithPaddle(enemy)) {
+
+    if (ball->getX() < 0 || ball->getX() > SCREEN_WIDTH - (Ball::SIZE)) {
+        ball->reset();
+        player->collided = false;
+        enemy->collided = false;
+    }
+    if (ball->collidesWithPaddle(player) && player->collided == false) {
+        ball->bounce(player);
+        player->collided = true;
+        enemy->collided = false;
+        //Predict a position for the ball
+        int predY = enemy->predict(ball);
+        enemy->setPred(predY);
+    }
+    else if (ball->collidesWithPaddle(enemy) && enemy->collided == false) {
+        ball->bounce(enemy);
+        enemy->collided = true;
+        player->collided = false;
+    }
+    else if (ball->collidesWithWall()) {
         ball->bounce();
     }
+    enemy->AI(ball);
 }
 
 void Pong::render() {
@@ -70,6 +94,11 @@ void Pong::render() {
 
     //Set color for everything
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+
+    //Draw line
+    for( int i = 0; i < SCREEN_HEIGHT; i += 4 ) {
+        SDL_RenderDrawPoint(renderer, SCREEN_WIDTH / 2, i );
+    }
 
     //Draw player
     SDL_Rect playerRect = {player->getX(), player->getY(), Paddle::WIDTH, Paddle::HEIGHT};

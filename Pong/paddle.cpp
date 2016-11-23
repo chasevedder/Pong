@@ -1,5 +1,8 @@
 #include "paddle.h"
 #include "pong.h"
+#include "ball.h"
+#include <iostream>
+#include <cmath>
 
 const int Paddle::WIDTH = 10;
 const int Paddle::HEIGHT = 50;
@@ -7,6 +10,7 @@ const int Paddle::HEIGHT = 50;
 Paddle::Paddle(int x, int y) {
     this->x = x;
     this->y = y;
+    collided = false;
 }
 
 int Paddle::getX() {
@@ -26,3 +30,33 @@ void Paddle::move(int dy) {
     y = newY;
 }
 
+void Paddle::AI(Ball* ball) {
+    if (ball->getX() < Pong::SCREEN_WIDTH / 3) return;
+    if ((y + WIDTH / 2) < pred) {
+        move(2);
+    } else if ((y - WIDTH / 2) > pred) {
+        move(-2);
+    }
+}
+
+int Paddle::predict(Ball* ball) {
+    int slope = ball->getYSpeed() / ball->getXSpeed();
+    std::cout << slope << std::endl;
+    std::cout << ball->getY() << std::endl;
+    int prediction = (slope * (x - ball->getX()) + ball->getY());
+    std::cout << prediction << std::endl;
+    prediction = std::abs(prediction);
+    int numFlips = prediction / Pong::SCREEN_HEIGHT;
+    if (numFlips % 2 == 0)
+        prediction = prediction % Pong::SCREEN_HEIGHT;
+    else
+        prediction = Pong::SCREEN_HEIGHT - (prediction % Pong::SCREEN_HEIGHT);
+
+
+    std::cout << prediction << std::endl;
+    return prediction - HEIGHT / 2;
+}
+
+void Paddle::setPred(int pred) {
+    this->pred = pred;
+}
