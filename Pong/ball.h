@@ -10,6 +10,7 @@ private:
     int y;
     int speed;
     int numHits;
+    int angle;
 public:
     Ball(int x, int y);
 
@@ -20,6 +21,7 @@ public:
     int getSize();
     int getSpeed();
 
+    void move();
     void launch();
     void updateSpeed();
     bool collidesWithWall();
