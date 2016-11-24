@@ -1,8 +1,12 @@
-#include "pong.h"
+#include "game.h"
+#include "pausemenu.h"
+
+
 
 int main(int argc, char* argv[]) {
-    Pong pong;
-    pong.run();
+    Game game;
+    game.changeState(new PauseMenu());
+    while (true) game.update();
     return 0;
 }
 

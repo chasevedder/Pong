@@ -99,9 +99,13 @@ void Ball::bounce(Paddle* paddle) {
     float magnitude = std::sqrt(ySpeed*ySpeed + xSpeed * xSpeed);
     float newY = magnitude * std::sin(exitAngle * M_PI / 180.0);
     float newX = magnitude * std::cos(exitAngle * M_PI / 180.0);
-    ySpeed = -newY;
-    xSpeed = -newX;
-    speed *= -1;
+    if (xSpeed < 0) {
+        newX *= -1;
+        newY *= -1;
+    }
+    ySpeed = newY;
+    xSpeed = newX;
+    speed *= 1;
 }
 
 void Ball::bounce() {
