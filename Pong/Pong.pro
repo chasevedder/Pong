@@ -9,10 +9,13 @@ INCLUDES += /usr/local/include
 SOURCES += main.cpp \
     pong.cpp \
     paddle.cpp \
-    ball.cpp
+    ball.cpp \
+    pausemenu.cpp
 
 HEADERS += \
     pong.h \
     paddle.h \
-    ball.h
+    ball.h \
+    gamestate.h \
+    pausemenu.h
 

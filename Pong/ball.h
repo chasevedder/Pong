@@ -6,24 +6,24 @@ class Paddle;
 class Ball
 {
 private:
-    int x;
-    int y;
+    float x;
+    float y;
     int prevX;
     int prevY;
     int speed;
     int numHits;
-    int xSpeed;
-    int ySpeed;
+    float xSpeed;
+    float ySpeed;
 public:
     Ball(int x, int y);
 
     static const int SIZE;
 
-    int getX();
-    int getY();
+    float getX();
+    float getY();
     int getSize();
-    int getXSpeed();
-    int getYSpeed();
+    float getXSpeed();
+    float getYSpeed();
 
     void move();
     void launch();

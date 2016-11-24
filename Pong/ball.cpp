@@ -2,8 +2,10 @@
 #include "paddle.h"
 #include "pong.h";
 #include <cmath>
+#include <iostream>
 
 const int Ball::SIZE = 10;
+
 
 Ball::Ball(int x, int y) {
     this->x = x;
@@ -13,11 +15,11 @@ Ball::Ball(int x, int y) {
     this->numHits = 0;
 }
 
-int Ball::getX() {
+float Ball::getX() {
     return x;
 }
 
-int Ball::getY() {
+float Ball::getY() {
     return y;
 }
 
@@ -31,7 +33,7 @@ bool Ball::collidesWithPaddle(Paddle* paddle) {
     }
     //Check collision with right paddle
     else {
-        if (x >= paddle->getX() && y > paddle->getY() && y < paddle->getY() + Paddle::HEIGHT) {
+        if (x >= paddle->getX() && y + SIZE > paddle->getY() && y < paddle->getY() + Paddle::HEIGHT) {
 
             return true;
         }
@@ -62,7 +64,7 @@ float Ball::slope() {
 }
 
 void Ball::bounce(Paddle* paddle) {
-    numHits++;
+    //numHits++;
     if (numHits > 5) {
         if (xSpeed < 0)
             xSpeed--;
@@ -77,7 +79,28 @@ void Ball::bounce(Paddle* paddle) {
     if (paddle != NULL){
         xSpeed *= -1;
     }
-
+    int distanceFromCenter = y + (SIZE / 2) - (paddle->getY() + (Paddle::HEIGHT / 2));
+    float exitAngle = std::atan(-ySpeed / -xSpeed);
+    exitAngle = exitAngle * 180.0 / M_PI;
+    if (distanceFromCenter < -10) {
+        if (ySpeed < 0) {
+            exitAngle *= 1.2;
+        } else {
+            exitAngle /= 1.2;
+        }
+    }
+    else if (distanceFromCenter > 10) {
+        if (ySpeed < 0) {
+            exitAngle /= 1.2;
+        } else {
+            exitAngle *= 1.2;
+        }
+    }
+    float magnitude = std::sqrt(ySpeed*ySpeed + xSpeed * xSpeed);
+    float newY = magnitude * std::sin(exitAngle * M_PI / 180.0);
+    float newX = magnitude * std::cos(exitAngle * M_PI / 180.0);
+    ySpeed = -newY;
+    xSpeed = -newX;
     speed *= -1;
 }
 
@@ -92,10 +115,12 @@ void Ball::reset() {
     ySpeed = 2;
 }
 
-int Ball::getXSpeed() {
+float Ball::getXSpeed() {
     return xSpeed;
 }
 
-int Ball::getYSpeed() {
+float Ball::getYSpeed() {
     return ySpeed;
 }
+
+

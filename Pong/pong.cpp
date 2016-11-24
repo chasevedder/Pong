@@ -39,10 +39,10 @@ void Pong::handleInput() {
 //    /SDL_PumpEvents();
     const Uint8* keystate = SDL_GetKeyboardState(NULL);
     if (keystate[SDL_SCANCODE_W]) {
-        player->move(-2);
+        player->move(-4);
     }
     else if (keystate[SDL_SCANCODE_S]) {
-        player->move(2);
+        player->move(4);
     }
     if (keystate[SDL_SCANCODE_ESCAPE])
         exit = true;
@@ -68,16 +68,18 @@ void Pong::update() {
         player->collided = false;
         enemy->collided = false;
     }
-    if (ball->collidesWithPaddle(player) && player->collided == false) {
+    if (player->collided == false && ball->collidesWithPaddle(player)) {
         ball->bounce(player);
         player->collided = true;
         enemy->collided = false;
         //Predict a position for the ball
+        std::cout << ball->getXSpeed() << ": " << ball->getYSpeed() << std::endl;
         int predY = enemy->predict(ball);
         enemy->setPred(predY);
     }
-    else if (ball->collidesWithPaddle(enemy) && enemy->collided == false) {
+    else if (enemy->collided == false && ball->collidesWithPaddle(enemy)) {
         ball->bounce(enemy);
+        enemy->setPred(SCREEN_HEIGHT / 2);
         enemy->collided = true;
         player->collided = false;
     }

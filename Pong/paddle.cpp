@@ -40,20 +40,14 @@ void Paddle::AI(Ball* ball) {
 }
 
 int Paddle::predict(Ball* ball) {
-    int slope = ball->getYSpeed() / ball->getXSpeed();
-    std::cout << slope << std::endl;
-    std::cout << ball->getY() << std::endl;
+    float slope = ball->getYSpeed() / ball->getXSpeed();
     int prediction = (slope * (x - ball->getX()) + ball->getY());
-    std::cout << prediction << std::endl;
     prediction = std::abs(prediction);
     int numFlips = prediction / Pong::SCREEN_HEIGHT;
     if (numFlips % 2 == 0)
         prediction = prediction % Pong::SCREEN_HEIGHT;
     else
         prediction = Pong::SCREEN_HEIGHT - (prediction % Pong::SCREEN_HEIGHT);
-
-
-    std::cout << prediction << std::endl;
     return prediction - HEIGHT / 2;
 }
 
