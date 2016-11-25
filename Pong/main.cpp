@@ -1,12 +1,12 @@
 #include "game.h"
-#include "pausemenu.h"
+#include "mainstate.h"
 
 
 
 int main(int argc, char* argv[]) {
     Game game;
-    game.changeState(new PauseMenu());
-    while (true) game.update();
+    game.changeState(new MainState());
+    while (game.getCurrentState() != NULL) game.update();
     return 0;
 }
 

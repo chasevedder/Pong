@@ -18,6 +18,7 @@ Game::~Game() {
 
 void Game::changeState(GameState* state) {
     currentState= state;
+    currentState->onEnter(this, renderer);
 }
 
 GameState* Game::getCurrentState() {
@@ -25,5 +26,10 @@ GameState* Game::getCurrentState() {
 }
 
 void Game::update() {
+    currentState->update(this, &event);
     currentState->render(renderer);
+
+    //Handle exit regardless of state
+    if (event.type == SDL_QUIT)
+        currentState = NULL;
 }

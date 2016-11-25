@@ -9,6 +9,7 @@ class Game : public GameStateManager
 {
 private:
     GameState* currentState;
+    SDL_Event event;
 public:
     Game();
 

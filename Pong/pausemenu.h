@@ -12,9 +12,9 @@ class PauseMenu : public GameState
 public:
     PauseMenu();
     ~PauseMenu();
-    virtual void update(GameStateManager* gsm);
+    virtual void update(GameStateManager* gsm, SDL_Event* event);
     virtual void render(SDL_Renderer *renderer);
-    virtual void onEnter(GameStateManager* gsm);
+    virtual void onEnter(GameStateManager* gsm, SDL_Renderer* renderer);
     virtual void exit();
 
 private:
@@ -23,6 +23,7 @@ private:
     SDL_Surface* surf;
     SDL_Texture* message;
     SDL_Rect messageRect;
+    SDL_Event event;
 };
 
 #endif // PAUSEMENU_H

@@ -11,7 +11,8 @@ SOURCES += main.cpp \
     paddle.cpp \
     ball.cpp \
     pausemenu.cpp \
-    game.cpp
+    game.cpp \
+    mainstate.cpp
 
 HEADERS += \
     pong.h \
@@ -20,5 +21,6 @@ HEADERS += \
     gamestate.h \
     pausemenu.h \
     gamestatemanager.h \
-    game.h
+    game.h \
+    mainstate.h
 
