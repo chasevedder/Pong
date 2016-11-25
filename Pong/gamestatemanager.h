@@ -9,6 +9,7 @@ public:
     virtual ~GameStateManager() {}
     virtual void changeState(GameState* state)=0;
     virtual GameState* getCurrentState()=0;
+    virtual GameState* getPrevState()=0;
     virtual void update()=0;
 };
 

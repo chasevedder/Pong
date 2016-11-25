@@ -9,6 +9,7 @@ class Game : public GameStateManager
 {
 private:
     GameState* currentState;
+    GameState* prevState;
     SDL_Event event;
 public:
     Game();
@@ -19,6 +20,7 @@ public:
     virtual ~Game();
     virtual void changeState(GameState* state);
     virtual GameState* getCurrentState();
+    virtual GameState* getPrevState();
     virtual void update();
     SDL_Window* window;
     SDL_Renderer* renderer;

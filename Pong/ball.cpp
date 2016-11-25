@@ -64,7 +64,7 @@ float Ball::slope() {
 }
 
 void Ball::bounce(Paddle* paddle) {
-    //numHits++;
+    numHits++;
     if (numHits > 5) {
         if (xSpeed < 0)
             xSpeed--;
