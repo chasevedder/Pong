@@ -6,22 +6,22 @@ class Ball;
 class Paddle
 {
 private:
-    int x;
-    int y;
+    float x;
+    float y;
     int pred;
 public:
-    Paddle(int x, int y);
+    Paddle(float x, float y);
 
     static const int WIDTH;
     static const int HEIGHT;
 
-    int getX();
-    int getY();
+    float getX();
+    float getY();
     bool collided;
     void setPred(int pred);
-    void setY(int y);
-    void move(int dy);
-    void AI(Ball* ball);
+    void setY(float y);
+    void move(float dy);
+    void AI(Ball* ball, float deltaTime);
     int predict(Ball* ball);
 };
 

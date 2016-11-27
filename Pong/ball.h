@@ -24,8 +24,9 @@ public:
     int getSize();
     float getXSpeed();
     float getYSpeed();
+    bool started;
 
-    void move();
+    void move(float deltaTime);
     void launch();
     void reset();
     bool collidesWithWall();

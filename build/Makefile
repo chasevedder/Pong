@@ -36,7 +36,7 @@ DISTNAME      = Pong1.0.0
 DISTDIR = /home/chase/workspace/Pong/build/.tmp/Pong1.0.0
 LINK          = g++
 LFLAGS        = -m64
-LIBS          = $(SUBLIBS) -L/usr/local/lib -lSDL2 -lSDL2_image -lSDL2_ttf -ldl -lpthread 
+LIBS          = $(SUBLIBS) -L/usr/local/lib -lenet -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_net -ldl -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -49,19 +49,21 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../Pong/main.cpp \
-		../Pong/pong.cpp \
 		../Pong/paddle.cpp \
 		../Pong/ball.cpp \
 		../Pong/pausemenu.cpp \
 		../Pong/game.cpp \
-		../Pong/mainstate.cpp 
+		../Pong/mainstate.cpp \
+		../Pong/mainmenu.cpp \
+		../Pong/multiplayerstate.cpp 
 OBJECTS       = main.o \
-		pong.o \
 		paddle.o \
 		ball.o \
 		pausemenu.o \
 		game.o \
-		mainstate.o
+		mainstate.o \
+		mainmenu.o \
+		multiplayerstate.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -118,20 +120,22 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../Pong/Pong.pro pong.h \
-		paddle.h \
+		../Pong/Pong.pro paddle.h \
 		ball.h \
 		gamestate.h \
 		pausemenu.h \
 		gamestatemanager.h \
 		game.h \
-		mainstate.h ../Pong/main.cpp \
-		../Pong/pong.cpp \
+		mainstate.h \
+		mainmenu.h \
+		multiplayerstate.h ../Pong/main.cpp \
 		../Pong/paddle.cpp \
 		../Pong/ball.cpp \
 		../Pong/pausemenu.cpp \
 		../Pong/game.cpp \
-		../Pong/mainstate.cpp
+		../Pong/mainstate.cpp \
+		../Pong/mainmenu.cpp \
+		../Pong/multiplayerstate.cpp
 QMAKE_TARGET  = Pong
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = Pong
@@ -320,26 +324,28 @@ compiler_clean:
 main.o: ../Pong/main.cpp ../Pong/game.h \
 		../Pong/gamestatemanager.h \
 		../Pong/gamestate.h \
-		../Pong/mainstate.h
+		../Pong/mainmenu.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Pong/main.cpp
 
-pong.o: ../Pong/pong.cpp ../Pong/pong.h \
-		../Pong/paddle.h \
-		../Pong/ball.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pong.o ../Pong/pong.cpp
-
 paddle.o: ../Pong/paddle.cpp ../Pong/paddle.h \
-		../Pong/pong.h \
-		../Pong/ball.h
+		../Pong/ball.h \
+		../Pong/game.h \
+		../Pong/gamestatemanager.h \
+		../Pong/gamestate.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o paddle.o ../Pong/paddle.cpp
 
 ball.o: ../Pong/ball.cpp ../Pong/ball.h \
 		../Pong/paddle.h \
-		../Pong/pong.h
+		../Pong/game.h \
+		../Pong/gamestatemanager.h \
+		../Pong/gamestate.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ball.o ../Pong/ball.cpp
 
 pausemenu.o: ../Pong/pausemenu.cpp ../Pong/mainstate.h \
-		../Pong/gamestate.h
+		../Pong/gamestate.h \
+		../Pong/ball.h \
+		../Pong/paddle.h \
+		../Pong/mainmenu.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pausemenu.o ../Pong/pausemenu.cpp
 
 game.o: ../Pong/game.cpp ../Pong/game.h \
@@ -349,9 +355,25 @@ game.o: ../Pong/game.cpp ../Pong/game.h \
 
 mainstate.o: ../Pong/mainstate.cpp ../Pong/mainstate.h \
 		../Pong/gamestate.h \
+		../Pong/ball.h \
+		../Pong/paddle.h \
 		../Pong/gamestatemanager.h \
-		../Pong/pausemenu.h
+		../Pong/pausemenu.h \
+		../Pong/game.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainstate.o ../Pong/mainstate.cpp
+
+mainmenu.o: ../Pong/mainmenu.cpp ../Pong/mainmenu.h \
+		../Pong/gamestate.h \
+		../Pong/game.h \
+		../Pong/gamestatemanager.h \
+		../Pong/mainstate.h \
+		../Pong/ball.h \
+		../Pong/paddle.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainmenu.o ../Pong/mainmenu.cpp
+
+multiplayerstate.o: ../Pong/multiplayerstate.cpp ../Pong/multiplayerstate.h \
+		../Pong/gamestate.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o multiplayerstate.o ../Pong/multiplayerstate.cpp
 
 ####### Install
 

@@ -22,6 +22,7 @@ public:
     virtual GameState* getCurrentState();
     virtual GameState* getPrevState();
     virtual void update();
+    void fpsCalc();
     SDL_Window* window;
     SDL_Renderer* renderer;
 };

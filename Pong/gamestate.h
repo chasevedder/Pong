@@ -10,7 +10,7 @@ class SDL_Renderer;
 class GameState
 {
     public:
-        virtual void update(GameStateManager* gsm, SDL_Event* event, SDL_Renderer* renderer)=0;
+        virtual void update(GameStateManager* gsm, SDL_Event* event, SDL_Renderer* renderer, float deltaTime)=0;
         virtual void render(SDL_Renderer* renderer, Uint8 alpha)=0;
         virtual void onEnter(GameStateManager* gsm, SDL_Renderer* renderer)=0;
         virtual void exit()=0;
