@@ -7,6 +7,7 @@
 #include "game.h"
 #include <cmath>
 #include <iostream>
+#include <random>
 
 const int Ball::SIZE = 10;
 

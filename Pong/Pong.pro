@@ -3,8 +3,10 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
-LIBS += -L/usr/local/lib -lenet -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_net -ldl -lpthread
+LIBS += -L/usr/local/lib -lenet -lSDL2 -lSDL2_image -lSDL2_ttf -ldl -lpthread
 INCLUDES += /usr/local/include
+
+QMAKE_CXXFLAGS += -std=c++11
 
 SOURCES += main.cpp \
     paddle.cpp \
