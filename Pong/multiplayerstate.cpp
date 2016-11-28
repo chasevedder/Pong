@@ -7,7 +7,6 @@
 int x = 0;
 
 MultiplayerState::MultiplayerState() {
-    player = new Paddle(20, 300);
 
 }
 
@@ -17,42 +16,34 @@ MultiplayerState::~MultiplayerState() {
 
 void MultiplayerState::onEnter(GameStateManager *gsm, SDL_Renderer *renderer) {
 
-    server = NULL;
+    client = NULL;
     if (enet_initialize () != 0)
     {
 
     }
 
+    client = enet_host_create(NULL, 1, 2, 57600 / 8, 14400 / 8);
 
-    /* Bind the server to the default localhost.     */
-    /* A specific host address can be specified by   */
-    /* enet_address_set_host (& address, "x.x.x.x"); */
-    address.host = ENET_HOST_ANY;
-    /* Bind the server to port 1234. */
+    enet_address_set_host(&address, "chasevedder.xyz");
     address.port = 1234;
 
-    server = enet_host_create (&address,
-                              32,   /* number of clients */
-                              2,    /* number of channels */
-                              0,    /* Any incoming bandwith */
-                              0);   /* Any outgoing bandwith */
+    peer = enet_host_connect(client, &address, 2, 0);
 
-
-    //std::cout << enet_address_get_host_ip(&address, "chasevedder.xyz", 1000);
-    enet_address_set_host(&address, "chasevedder.xyz");
-
-    serviceResult = 1;
+    if (enet_host_service (client, &enetEvent, 5000) > 0 &&
+        enetEvent.type == ENET_EVENT_TYPE_CONNECT)
+    {
+        std::cout << "connected to server" << std::endl;
+    }
 }
 
 void MultiplayerState::update(GameStateManager *gsm, SDL_Event *event, SDL_Renderer *renderer, float deltaTime) {
 
 
     const Uint8* keystate = SDL_GetKeyboardState(NULL);
-    if (keystate[SDL_SCANCODE_W]) {
-        player->move(-20 * deltaTime);
-    }
-    else if (keystate[SDL_SCANCODE_S]) {
-        player->move(20 * deltaTime);
+
+    if (keystate[SDL_SCANCODE_1]) {
+        ENetPacket * packet = enet_packet_create ("test", 5, ENET_PACKET_FLAG_RELIABLE);
+        enet_peer_send(peer, 0, packet);
     }
 
     while (SDL_PollEvent(event) != 0) {
@@ -61,21 +52,11 @@ void MultiplayerState::update(GameStateManager *gsm, SDL_Event *event, SDL_Rende
         }
     }
 
-    while (enet_host_service(server, &enetEvent, 10) > 0) {
-        std::string message = "Paddle y: " + std::to_string(player->getY());
-        ENetPacket *asdfasdf = enet_packet_create (message.c_str(), message.length() + 1, ENET_PACKET_FLAG_RELIABLE);
+    while (enet_host_service(client, &enetEvent, 10) > 0) {
         switch (enetEvent.type) {
         case ENET_EVENT_TYPE_CONNECT:
-            std::cout << address.host << ":" << address.port << std::endl;
-            std::cout << enetEvent.peer->address.host << ":" << enetEvent.peer->address.port << std::endl;
-            enet_host_broadcast(server, 0, asdfasdf);
             break;
         case ENET_EVENT_TYPE_RECEIVE:
-            char* s = (char*)enetEvent.packet->data;
-            std::string temp = s;
-            int i = std::stoi(temp);
-            std::cout << i << std::endl;
-            player->move(i);
             break;
         }
     }
@@ -87,12 +68,10 @@ void MultiplayerState::update(GameStateManager *gsm, SDL_Event *event, SDL_Rende
 void MultiplayerState::render(SDL_Renderer *renderer, Uint8 alpha) {
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     //Draw player
-    SDL_Rect playerRect = {player->getX(), player->getY(), Paddle::WIDTH, Paddle::HEIGHT};
-    SDL_RenderFillRect(renderer, &playerRect);
 }
 
 void MultiplayerState::exit() {
-    enet_host_destroy (server);
+    enet_host_destroy (client);
     enet_deinitialize ();
 }
 

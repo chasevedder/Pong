@@ -20,10 +20,9 @@ public:
 
 private:
     ENetAddress address;
-    ENetHost *server;
+    ENetHost *client;
+    ENetPeer* peer;
     ENetEvent enetEvent;
-    int serviceResult;
-    Paddle* player;
 
 };
 

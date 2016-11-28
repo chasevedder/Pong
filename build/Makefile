@@ -14,7 +14,7 @@ CC            = gcc
 CXX           = g++
 DEFINES       = 
 CFLAGS        = -m64 -pipe -g -Wall -W -fPIC $(DEFINES)
-CXXFLAGS      = -m64 -pipe -g -std=c++0x -Wall -W -fPIC $(DEFINES)
+CXXFLAGS      = -m64 -pipe -std=c++11 -g -std=c++0x -Wall -W -fPIC $(DEFINES)
 INCPATH       = -I../Pong -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64
 QMAKE         = /usr/lib/x86_64-linux-gnu/qt5/bin/qmake
 DEL_FILE      = rm -f
@@ -36,7 +36,7 @@ DISTNAME      = Pong1.0.0
 DISTDIR = /home/chase/workspace/Pong/build/.tmp/Pong1.0.0
 LINK          = g++
 LFLAGS        = -m64
-LIBS          = $(SUBLIBS) -L/usr/local/lib -lenet -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_net -ldl -lpthread 
+LIBS          = $(SUBLIBS) -L/usr/local/lib -lenet -lSDL2 -lSDL2_image -lSDL2_ttf -ldl -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -368,11 +368,14 @@ mainmenu.o: ../Pong/mainmenu.cpp ../Pong/mainmenu.h \
 		../Pong/gamestatemanager.h \
 		../Pong/mainstate.h \
 		../Pong/ball.h \
-		../Pong/paddle.h
+		../Pong/paddle.h \
+		../Pong/multiplayerstate.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainmenu.o ../Pong/mainmenu.cpp
 
 multiplayerstate.o: ../Pong/multiplayerstate.cpp ../Pong/multiplayerstate.h \
-		../Pong/gamestate.h
+		../Pong/gamestate.h \
+		../Pong/paddle.h \
+		../Pong/gamestatemanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o multiplayerstate.o ../Pong/multiplayerstate.cpp
 
 ####### Install
