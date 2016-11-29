@@ -5,6 +5,7 @@
 #include "SDL2/SDL.h"
 #include "enet/enet.h"
 #include "paddle.h"
+#include "sdltext.h"
 
 class GameStateManager;
 
@@ -23,6 +24,11 @@ private:
     ENetHost *client;
     ENetPeer* peer;
     ENetEvent enetEvent;
+
+    bool connectedToServer;
+
+    SDLText* text;
+
 
 };
 

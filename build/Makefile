@@ -36,7 +36,7 @@ DISTNAME      = Pong1.0.0
 DISTDIR = /home/chase/workspace/Pong/build/.tmp/Pong1.0.0
 LINK          = g++
 LFLAGS        = -m64
-LIBS          = $(SUBLIBS) -L/usr/local/lib -lenet -lSDL2 -lSDL2_image -lSDL2_ttf -ldl -lpthread 
+LIBS          = $(SUBLIBS) -L/usr/local/lib -lenet -lprotobuf -lSDL2 -lSDL2_image -lSDL2_ttf -ldl -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -55,7 +55,9 @@ SOURCES       = ../Pong/main.cpp \
 		../Pong/game.cpp \
 		../Pong/mainstate.cpp \
 		../Pong/mainmenu.cpp \
-		../Pong/multiplayerstate.cpp 
+		../Pong/multiplayerstate.cpp \
+		../Pong/sdltext.cpp \
+		../Pong/test.pb.cc 
 OBJECTS       = main.o \
 		paddle.o \
 		ball.o \
@@ -63,7 +65,9 @@ OBJECTS       = main.o \
 		game.o \
 		mainstate.o \
 		mainmenu.o \
-		multiplayerstate.o
+		multiplayerstate.o \
+		sdltext.o \
+		test.pb.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -128,14 +132,18 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		game.h \
 		mainstate.h \
 		mainmenu.h \
-		multiplayerstate.h ../Pong/main.cpp \
+		multiplayerstate.h \
+		sdltext.h \
+		test.pb.h ../Pong/main.cpp \
 		../Pong/paddle.cpp \
 		../Pong/ball.cpp \
 		../Pong/pausemenu.cpp \
 		../Pong/game.cpp \
 		../Pong/mainstate.cpp \
 		../Pong/mainmenu.cpp \
-		../Pong/multiplayerstate.cpp
+		../Pong/multiplayerstate.cpp \
+		../Pong/sdltext.cpp \
+		../Pong/test.pb.cc
 QMAKE_TARGET  = Pong
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = Pong
@@ -369,14 +377,27 @@ mainmenu.o: ../Pong/mainmenu.cpp ../Pong/mainmenu.h \
 		../Pong/mainstate.h \
 		../Pong/ball.h \
 		../Pong/paddle.h \
-		../Pong/multiplayerstate.h
+		../Pong/multiplayerstate.h \
+		../Pong/sdltext.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainmenu.o ../Pong/mainmenu.cpp
 
 multiplayerstate.o: ../Pong/multiplayerstate.cpp ../Pong/multiplayerstate.h \
 		../Pong/gamestate.h \
 		../Pong/paddle.h \
-		../Pong/gamestatemanager.h
+		../Pong/sdltext.h \
+		../Pong/gamestatemanager.h \
+		../Pong/mainmenu.h \
+		../Pong/game.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o multiplayerstate.o ../Pong/multiplayerstate.cpp
+
+sdltext.o: ../Pong/sdltext.cpp ../Pong/sdltext.h \
+		../Pong/game.h \
+		../Pong/gamestatemanager.h \
+		../Pong/gamestate.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sdltext.o ../Pong/sdltext.cpp
+
+test.pb.o: ../Pong/test.pb.cc ../Pong/test.pb.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o test.pb.o ../Pong/test.pb.cc
 
 ####### Install
 

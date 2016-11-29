@@ -3,7 +3,7 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
-LIBS += -L/usr/local/lib -lenet -lSDL2 -lSDL2_image -lSDL2_ttf -ldl -lpthread
+LIBS += -L/usr/local/lib -lenet -lprotobuf -lSDL2 -lSDL2_image -lSDL2_ttf -ldl -lpthread
 INCLUDES += /usr/local/include
 
 QMAKE_CXXFLAGS += -std=c++11
@@ -15,7 +15,9 @@ SOURCES += main.cpp \
     game.cpp \
     mainstate.cpp \
     mainmenu.cpp \
-    multiplayerstate.cpp
+    multiplayerstate.cpp \
+    sdltext.cpp \
+    test.pb.cc
 HEADERS += \
     paddle.h \
     ball.h \
@@ -25,5 +27,7 @@ HEADERS += \
     game.h \
     mainstate.h \
     mainmenu.h \
-    multiplayerstate.h
+    multiplayerstate.h \
+    sdltext.h \
+    test.pb.h
 
